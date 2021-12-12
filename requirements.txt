@@ -1,0 +1,12 @@
+#package versions
+#how to get package versions
+#type these 2 command in your terminal
+#pip freeze > requirements.txt
+#cat requrements.txt
+
+pandas==1.3.4
+matplotlib==3.5.0
+matplotlib-inline==0.1.3
+numpy==1.21.4
+mplfinance==0.12.7a17
+opencv-python==4.5.4.58
