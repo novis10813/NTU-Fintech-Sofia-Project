@@ -6,7 +6,7 @@ import matplotlib.dates as mpl_dates
 from datetime import datetime
 import os
 import cv2
-import numpy as np
+import numpy as np  
 
 def Write_to_file(Date, net_worth, filename=f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}.txt'):
     for i in net_worth:
