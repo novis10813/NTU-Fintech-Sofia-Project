@@ -1,8 +1,8 @@
 import tensorflow as tf
-from tensorflow.keras import layers
+from tensorflow.keras import layers, Model
 from parameters import params
 
-class Net:
+class Net(Model):
     def __init__(self, env):
         super(Net, self).__init__()
         self.layer_1 = layers.Dense(32, activation='relu')
