@@ -1,4 +1,4 @@
-class params:
+class Hyperparams:
     LR = 0.0001
     EPSILON = 0.1
     MIN_EPSILON = 0.0001

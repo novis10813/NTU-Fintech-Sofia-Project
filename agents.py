@@ -7,7 +7,7 @@ import random
 import os
 
 from collections import deque
-from parameters import params
+from parameters import Hyperparams
 from models import Net
 from utils import LinearAnneal
 
@@ -82,7 +82,7 @@ class FqlAgent:
 	def modelsave(self):
 		self.model.save("fqlmodel")
 
-class DQN(params):
+class DQN(Hyperparams):
     def __init__(self, env):
         self.env = env
         self.n_action = len(self.env.action_space)
