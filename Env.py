@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import random
+import random   
 from collections import deque
 from utils import TradingGraph
 
@@ -50,7 +50,7 @@ class CustomEnv:
         for i in reversed(range(self.window_size)):
             current_step = self.current_step - i
             self.orders_history.append([self.balance, self.net_worth, self.crypto_bought, self.crypto_sold, self.crypto_held])
-            self.market_history.append([self.df.loc[current_step, 'Open'],
+            self.market_history.append([self.df.loc[current_step, 'open'],
                                         self.df.loc[current_step, 'High'],
                                         self.df.loc[current_step, 'Low'],
                                         self.df.loc[current_step, 'Close'],
