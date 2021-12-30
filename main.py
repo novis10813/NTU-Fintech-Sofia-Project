@@ -37,7 +37,7 @@ print(df[:5])"""
 #rl
 from utils import TradingGraph
 from Env import CustomEnv
-from agent import FqlAgent
+from agents import FqlAgent
 #from agent1 import LogisticPolicy
 
 divider=int(8*len(df)/10)
