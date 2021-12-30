@@ -1,0 +1,10 @@
+class params:
+    LR = 0.0001
+    EPSILON = 0.1
+    MIN_EPSILON = 0.0001
+    MEMORY_SIZE = 20000
+    EPISODES = 20000
+    BATCH_SIZE = 64
+    MODEL_UPDATE = 5
+    GAMMA = 0.9
+    DISCOUNT = 0.95
