@@ -18,7 +18,7 @@ class param:
 case1=param("XBTUSD","1h",0.01,0.99,5,0.8)
 
 import os
-from data_bitmex import get_all_bitmex
+from data.data_bitmex import get_all_bitmex
 
 df = get_all_bitmex(case1.symbol,case1.kline_size,save=True)
 df.columns=['Date', 'symbol', 'Open', 'High', 'Low', 'Close', 'Trades',

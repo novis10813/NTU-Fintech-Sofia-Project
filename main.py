@@ -7,7 +7,7 @@ import random
 
 #data proccessing(checking and downloading raw data,change columns to feat env.py's requirement)
 import os
-from data_bitmex import get_all_bitmex
+from data.data_bitmex import get_all_bitmex
 #symbol=input("examples:{XBTUSD,ETHUSD}\nsymbol:")
 #kline_size=input("examples:{1m,5m,1h,1d}\nkline_size:")
 symbol="ETHUSD"

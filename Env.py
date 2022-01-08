@@ -7,7 +7,7 @@ from utils import TradingGraph
 
 class CustomEnv:
     # A custom Bitcoin trading environment
-    def __init__(self, df, initial_balance=1000, window_size=50, Render_range = 100):
+    def __init__(self, df, initial_balance=1000, window_size=50, Render_range = 100, commission=0.00075, slippage=0.02):
         # Define action space and state size and other custom parameters
         self.df = df.dropna().reset_index()
         self.df_total_steps = len(self.df)-1
@@ -25,7 +25,7 @@ class CustomEnv:
         self.market_history = deque(maxlen=self.window_size)
 
         # State size contains Market+Orders history for the last lookback_window_size steps
-        self.state_size = (self.window_size, 10)
+        self.state_size = (self.window_size, len(self.df.columns))
 
     # Reset the state of the environment to an initial state
     def reset(self, env_steps_size = 0):
@@ -50,7 +50,7 @@ class CustomEnv:
         for i in reversed(range(self.window_size)):
             current_step = self.current_step - i
             self.orders_history.append([self.balance, self.net_worth, self.crypto_bought, self.crypto_sold, self.crypto_held])
-            self.market_history.append([self.df.loc[current_step, 'open'],
+            self.market_history.append([self.df.loc[current_step, 'Open'],
                                         self.df.loc[current_step, 'High'],
                                         self.df.loc[current_step, 'Low'],
                                         self.df.loc[current_step, 'Close'],
