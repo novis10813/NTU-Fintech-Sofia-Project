@@ -28,8 +28,8 @@ def minutes_of_new_data(symbol, kline_size, data, source):
 
 def get_all_bitmex(symbol, kline_size, save = False):
 	filename = '%s-%s-data.csv' % (symbol, kline_size)
-	if os.path.isfile(filename):
-		return pd.read_csv(filename)
+	if os.path.isfile("./data/"+filename):
+		return pd.read_csv("./data/"+filename)
 	data_df = pd.DataFrame()
 	oldest_point, newest_point = minutes_of_new_data(symbol, kline_size, data_df, source = "bitmex")
 	delta_min = (newest_point - oldest_point).total_seconds()/60

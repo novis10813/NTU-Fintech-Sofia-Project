@@ -7,6 +7,8 @@ from Env import CustomEnv
 df = pd.read_csv()
 '''
 
+train_df,valid_df=preproccessing("ETHBTC","5m",1)
+
 env = CustomEnv()
 
 ### DQN Agent ###
