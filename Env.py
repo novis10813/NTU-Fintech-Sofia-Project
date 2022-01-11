@@ -7,11 +7,13 @@ from utils import TradingGraph
 
 class CustomEnv:
     # A custom Bitcoin trading environment
-    def __init__(self, df, initial_balance=1000, window_size=50, Render_range = 100, commission=0.00075, slippage=0.02):
+    def __init__(self, df, initial_balance=1000, window_size=50, Render_range = 100, commission=0.00075, slippage=0.01):
         # Define action space and state size and other custom parameters
         self.df = df.dropna().reset_index()
         self.df_total_steps = len(self.df)-1
         self.initial_balance = initial_balance
+        self.commission = commission
+        self.slippage = slippage
         self.window_size = window_size
         self.Render_range = Render_range # render range in visualization
 
@@ -38,6 +40,7 @@ class CustomEnv:
         self.crypto_held = 0
         self.crypto_sold = 0
         self.crypto_bought = 0
+        
         if env_steps_size > 0: # used for training dataset
             self.start_step = random.randint(self.window_size, self.df_total_steps - env_steps_size)
             self.end_step = self.start_step + env_steps_size
@@ -90,7 +93,7 @@ class CustomEnv:
 
         elif action == 1 and self.balance > self.initial_balance/100:
             # Buy with 100% of current balance
-            self.crypto_bought = self.balance / current_price
+            self.crypto_bought = (self.balance / current_price) * (1-self.commission) * (1-self.slippage)
             self.balance -= self.crypto_bought * current_price
             self.crypto_held += self.crypto_bought
             self.trades.append({'Date' : Date, 'High' : High, 'Low' : Low, 'total': self.crypto_bought, 'type': "buy"})
