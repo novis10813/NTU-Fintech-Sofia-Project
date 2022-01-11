@@ -15,16 +15,16 @@ agent.train()
 #################
 
 ### Duel DQN ###
-agent = DuelDQN(env)
-agent.train()
+# agent = DuelDQN(env)
+# agent.train()
 ################
 
 ### Double DQN ###
-agent = DoubleDQN(env)
-agent.train()
+# agent = DoubleDQN(env)
+# agent.train()
 ################
 
 ### CER DQN ###
-agent = CERDQN(env)
-agent.train()
+# agent = CERDQN(env)
+# agent.train()
 ################
