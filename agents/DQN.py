@@ -3,7 +3,6 @@ import numpy as np
 import logging
 import random
 import itertools
-import os
 
 from collections import deque
 from parameters import DQNparams
@@ -101,14 +100,20 @@ class DQN(DQNparams):
                 self._optimize()
                 total_reward += reward
                 state = next_state
+                
+                # Update model every n iteration
+                # if episode % self.MODEL_UPDATE == 0:
+                #     self._update_model()
+                
                 if done:
                     break
-
+                
             optm_cnt += t
             reward_list.append(total_reward)
             if total_reward > max(reward_list):
                 self._save(path=f'./models/{self.name}_{self.type}')
-                
+            
+            # Update model every n episode
             if episode % self.MODEL_UPDATE == 0:
                 self._update_model()
             
@@ -204,6 +209,11 @@ class CERDQN(DQN):
                 self._optimize()
                 total_reward += reward
                 state = next_state
+                
+                # Update model every n iteration
+                # if episode % self.MODEL_UPDATE == 0:
+                #     self._update_model()
+                
                 if done:
                     break
             
@@ -220,7 +230,7 @@ class CERDQN(DQN):
             self.log.info(f'{episode},{optm_cnt},{total_reward},{self.epsilon.p:.6f}')
     
     def test(self, model):
-        '''load model'''
+        '''to do: load model'''
         while True:
             state = self.env.reset()
             self.env.reset()
