@@ -1,7 +1,8 @@
-from typing_extensions import Self
 import tensorflow as tf
 import numpy as np
+import logging
 import random
+import itertools
 import os
 
 from collections import deque
@@ -26,6 +27,9 @@ class DQN(DQNparams):
         
         # greedy policy
         self.epsilon = LinearAnneal(self.EPSILON, self.MIN_EPSILON, self.EPISODES)
+        
+        # initialize logging
+        self.log = self._logging()
     
     def _init_model(self):
         self.policy_model = Net(self.state_shape, self.n_action, self.LR, self.type, self.layer_norm)
@@ -72,22 +76,35 @@ class DQN(DQNparams):
     
     def _save(self, path):
         self.policy_model.save(path)
-        
+    
+    def _logging(self):
+        formatter = logging.Formatter(r'"%(asctime)s",%(message)s')
+        logger = logging.getLogger('Trade-Agents')
+        logger.setLevel(logging.INFO)
+        fh = logging.FileHandler(f'./logs/{self.name}_{self.type}.csv')
+        fh.setFormatter(formatter)
+        logger.addHandler(fh)
+        return logger
+    
     def train(self):
         reward_list = []
+        optm_cnt = 0
         for episode in range(1, self.EPISODES+1):
             self.env.reset()
             state = self.env.reset()
             done = False
             total_reward = 0
-            while not done:
+            for t in itertools():
                 action = self._choose_action(state)
                 next_state, reward, done = self.env.step(action)
                 self._update_memory((state, action, next_state, reward, done))
                 self._optimize()
                 total_reward += reward
                 state = next_state
-                
+                if done:
+                    break
+
+            optm_cnt += t
             reward_list.append(total_reward)
             if total_reward > max(reward_list):
                 self._save(path=f'./models/{self.name}_{self.type}')
@@ -95,7 +112,7 @@ class DQN(DQNparams):
             if episode % self.MODEL_UPDATE == 0:
                 self._update_model()
             
-            print(f'episode: {episode} | reward {total_reward}')
+            self.log.info(f'{episode},{optm_cnt},{total_reward},{self.epsilon.p:.6f}')
             
 class DuelDQN(DQN):
     def __init__(self, env, type='RNN', layer_norm=False, name='DuelDQN'):
@@ -172,13 +189,14 @@ class CERDQN(DQN):
         self.policy_model.train_on_batch(states, Qs_target)
     
     def train(self):
+        optm_cnt = 0
         reward_list = []
         for episode in range(1, self.EPISODES+1):
             self.env.reset()
             state = self.env.reset()
             done = False
             total_reward = 0
-            while not done:
+            for t in itertools.count():
                 action = self._choose_action(state)
                 next_state, reward, done = self.env.step(action)
                 self.new_transition = (state, action, next_state, reward, done)
@@ -186,12 +204,28 @@ class CERDQN(DQN):
                 self._optimize()
                 total_reward += reward
                 state = next_state
-                
+                if done:
+                    break
+            
+            optm_cnt += t
             reward_list.append(total_reward)
             if total_reward > max(reward_list):
                 self._save(path=f'./models/{self.name}_{self.type}')
-                
+            
+            # Update model every 5 episode    
             if episode % self.MODEL_UPDATE == 0:
                 self._update_model()
             
-            print(f'episode: {episode} | reward {total_reward}')
+            # record info
+            self.log.info(f'{episode},{optm_cnt},{total_reward},{self.epsilon.p:.6f}')
+    
+    def test(self, model):
+        '''load model'''
+        while True:
+            state = self.env.reset()
+            self.env.reset()
+            done = False
+            while not done:
+                action = np.argmax(self.policy_model.predict(np.expand_dims(state, axis=0)))
+                next_state, _, done = self.env.step(action)
+                state = next_state
