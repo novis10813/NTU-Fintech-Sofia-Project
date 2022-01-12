@@ -1,13 +1,8 @@
-from data.data_bitmex import get_all_bitmex
+import pandas as pd
 
-def preprocessing(symbol,kline_size,process_class=1):
-	df = get_all_bitmex(symbol,kline_size,save=True)
-	print(df)
-	df.columns=['Date', 'symbol', 'Open', 'High', 'Low', 'Close', 'Trades',
-				'Volume', 'vwap', 'lastSize', 'turnover', 'homeNotional','foreignNotional']
-	
+def preprocessing(df,process_class):
 	train_ratio = 0.8
-	df = df[:int(train_ratio * len(df))]
+	df=df[['Date', 'Open', 'High', 'Low', 'Close','Volume']]
 	train_df = df[:int(train_ratio * len(df))]
 	valid_df = df[int(train_ratio * len(df)):]
 	normalized_train_df=train_df
@@ -23,7 +18,7 @@ def preprocessing(symbol,kline_size,process_class=1):
 		train_std = train_df.std()
 		normalized_train_df = (normalized_train_df - train_mean)/train_std
 		normalized_valid_df = (normalized_valid_df - train_mean)/train_std
-		normalized_train_close = normalized_train_df['Close']
-		normalized_valid_close = normalized_valid_df['Close']
+		normalized_train_df['Real_Close']=train_df['Close']
+		normalized_valid_df['Real_Close']=valid_df['Close']
 
 	return normalized_train_df,normalized_valid_df
