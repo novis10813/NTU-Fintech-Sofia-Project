@@ -2,17 +2,18 @@ import numpy as np
 from Env import CustomEnv
 
 class LogisticPolicy:
-	def __init__(self, θ, α, γ):
+	def __init__(self, θ, α, γ, window_size):
 		# Initialize paramters θ, learning rate α and discount factor γ
-		self.θ = np.reshape(θ,(500,1))
+		self.θ = np.reshape(θ,(window_size*10,1))
 		self.α = α
 		self.γ = γ
+		self.window_size=window_size*10
 	def logistic(self, y):
 		# definition of logistic function
 		return 1/(1 + np.exp(-y))
 	def probs(self, x):
 		# returns probabilities of two actions
-		x=np.reshape(x, (1, 500))
+		x=np.reshape(x, (1, window_size))
 		y = x @ self.θ
 		prob0 = self.logistic(y)
 		return np.array([prob0, 1-prob0])
@@ -25,7 +26,7 @@ class LogisticPolicy:
 		return action, probs[action]
 	def grad_log_p(self, x):
 		# calculate grad-log-probs
-		x=np.reshape(x, (1, 500))
+		x=np.reshape(x, (1, window_size))
 		y = x @ self.θ
 		grad_log_p0 = x - x*self.logistic(y)
 		grad_log_p1 = - x*self.logistic(y)
@@ -101,10 +102,10 @@ def run_episode(env, policy, render=True):
 		probs.append(prob)
 	return totalreward, np.array(rewards), np.array(observations), np.array(actions), np.array(probs)
 	
-def train(θ, α, γ, Policy, learn_env,valid_env, MAX_EPISODES=1000, evaluate=False):
+def LP_train(θ, α, γ,window_size, Policy, learn_env,valid_env, MAX_EPISODES=1000, evaluate=False):
 	# initialize environment and policy
 	episode_rewards = []
-	policy = Policy(θ,α,γ)
+	policy = Policy(θ,α,γ,window_size)
 	# train until MAX_EPISODES
 	for i in range(MAX_EPISODES):
 		# run a single episode

@@ -2,6 +2,7 @@ from data.data_bitmex import get_all_bitmex
 
 def preprocessing(symbol,kline_size,process_class=1):
 	df = get_all_bitmex(symbol,kline_size,save=True)
+	print(df)
 	df.columns=['Date', 'symbol', 'Open', 'High', 'Low', 'Close', 'Trades',
 				'Volume', 'vwap', 'lastSize', 'turnover', 'homeNotional','foreignNotional']
 	
@@ -13,6 +14,9 @@ def preprocessing(symbol,kline_size,process_class=1):
 	normalized_valid_df=valid_df
 	normalized_train_close = train_df['Close']
 	normalized_valid_close = valid_df['Close']
+
+	if process_class==0:
+		pass
 
 	if process_class==1:
 		train_mean = train_df.mean()

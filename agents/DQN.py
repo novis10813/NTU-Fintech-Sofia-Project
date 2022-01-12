@@ -17,7 +17,7 @@ class DQN(DQNparams):
         self.type = type
         self.layer_norm = layer_norm
         self.name = name
-        
+
         # initialize model
         self._init_model()
         
@@ -101,9 +101,9 @@ class DQN(DQNparams):
                 total_reward += reward
                 state = next_state
                 
-                # Update model every n iteration
-                # if episode % self.MODEL_UPDATE == 0:
-                #     self._update_model()
+                #Update model every n iteration
+                if episode % self.MODEL_UPDATE == 0:
+                    self._update_model()
                 
                 if done:
                     break
@@ -210,9 +210,9 @@ class CERDQN(DQN):
                 total_reward += reward
                 state = next_state
                 
-                # Update model every n iteration
-                # if episode % self.MODEL_UPDATE == 0:
-                #     self._update_model()
+                #Update model every n iteration
+                if episode % self.MODEL_UPDATE == 0:
+                    self._update_model()
                 
                 if done:
                     break
