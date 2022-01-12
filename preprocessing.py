@@ -21,6 +21,8 @@ def preprocessing(df,process_class):
 		col=['s_Close','s_Date','s_High','s_Low','s_Open','s_Volume']
 		normalized_train_df.columns=col
 		normalized_valid_df.columns=col
-		normalized_train_df[['Date', 'Open', 'High', 'Low', 'Close','Volume']]=df[['Date', 'Open', 'High', 'Low', 'Close','Volume']]
-		normalized_valid_df[['Date', 'Open', 'High', 'Low', 'Close','Volume']]=df[['Date', 'Open', 'High', 'Low', 'Close','Volume']]
+		normalized_train_df[['Date', 'Open', 'High', 'Low', 'Close','Volume']]=train_df[['Date', 'Open', 'High', 'Low', 'Close','Volume']]
+		normalized_valid_df[['Date', 'Open', 'High', 'Low', 'Close','Volume']]=valid_df[['Date', 'Open', 'High', 'Low', 'Close','Volume']]
+		normalized_train_df=normalized_train_df.drop(['s_Date'],axis=1)
+		normalized_valid_df=normalized_valid_df.drop(['s_Date'],axis=1)
 	return normalized_train_df,normalized_valid_df

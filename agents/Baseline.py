@@ -13,7 +13,7 @@ class LogisticPolicy:
 		return 1/(1 + np.exp(-y))
 	def probs(self, x):
 		# returns probabilities of two actions
-		x=np.reshape(x, (1, window_size))
+		x=np.reshape(x, (1, self.window_size))
 		y = x @ self.θ
 		prob0 = self.logistic(y)
 		return np.array([prob0, 1-prob0])
@@ -26,7 +26,7 @@ class LogisticPolicy:
 		return action, probs[action]
 	def grad_log_p(self, x):
 		# calculate grad-log-probs
-		x=np.reshape(x, (1, window_size))
+		x=np.reshape(x, (1, self.window_size))
 		y = x @ self.θ
 		grad_log_p0 = x - x*self.logistic(y)
 		grad_log_p1 = - x*self.logistic(y)
@@ -95,7 +95,7 @@ def run_episode(env, policy, render=True):
 		action, prob = policy.act(observation)
 		observation, reward, done= env.step(action+1)
 		totalreward += reward
-		if i%10000==0:
+		if i%1000==0:
 			print("i",i," totalreward",totalreward)
 		rewards.append(reward)
 		actions.append(action)
