@@ -18,7 +18,9 @@ def preprocessing(df,process_class):
 		train_std = train_df.std()
 		normalized_train_df = (normalized_train_df - train_mean)/train_std
 		normalized_valid_df = (normalized_valid_df - train_mean)/train_std
-		normalized_train_df['Real_Close']=train_df['Close']
-		normalized_valid_df['Real_Close']=valid_df['Close']
-
+		col=['s_Close','s_Date','s_High','s_Low','s_Open','s_Volume']
+		normalized_train_df.columns=col
+		normalized_valid_df.columns=col
+		normalized_train_df[['Date', 'Open', 'High', 'Low', 'Close','Volume']]=df[['Date', 'Open', 'High', 'Low', 'Close','Volume']]
+		normalized_valid_df[['Date', 'Open', 'High', 'Low', 'Close','Volume']]=df[['Date', 'Open', 'High', 'Low', 'Close','Volume']]
 	return normalized_train_df,normalized_valid_df

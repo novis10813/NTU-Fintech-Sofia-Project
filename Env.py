@@ -65,11 +65,11 @@ class CustomEnv:
 
     # Get the data points for the given current_step
     def _next_observation(self):
-        self.market_history.append([self.df.loc[self.current_step, 'Open'],
-                                    self.df.loc[self.current_step, 'High'],
-                                    self.df.loc[self.current_step, 'Low'],
-                                    self.df.loc[self.current_step, 'Close'],
-                                    self.df.loc[self.current_step, 'Volume']
+        self.market_history.append([self.df.loc[self.current_step, 's_Open'],
+                                    self.df.loc[self.current_step, 's_High'],
+                                    self.df.loc[self.current_step, 's_Low'],
+                                    self.df.loc[self.current_step, 's_Close'],
+                                    self.df.loc[self.current_step, 's_Volume']
                                     ])
         obs = np.concatenate((self.market_history, self.orders_history), axis=1)
         return obs
