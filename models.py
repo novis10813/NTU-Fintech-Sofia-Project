@@ -6,16 +6,16 @@ from tensorflow.python.keras.optimizer_v2.rmsprop import RMSProp
 
 def RNN_Block(x, layer_norm=False):
     if layer_norm:
-        x = layers.RNN(64, activation='relu', return_sequences=True)(x)
+        x = layers.SimpleRNN(64, activation='relu', return_sequences=True)(x)
         x = layers.LayerNormalization()(x)
-        x = layers.RNN(128, activation='relu', return_sequences=True)(x)
+        x = layers.SimpleRNN(128, activation='relu', return_sequences=True)(x)
         x = layers.LayerNormalization()(x)
-        x = layers.RNN(256, activation='relu', return_sequences=False)(x)
+        x = layers.SimpleRNN(256, activation='relu', return_sequences=False)(x)
         x = layers.LayerNormalization()(x)
     else:
-        x = layers.RNN(64, activation='relu', return_sequences=True)(x)
-        x = layers.RNN(128, activation='relu', return_sequences=True)(x)
-        x = layers.RNN(256, activation='relu', return_sequences=False)(x)
+        x = layers.SimpleRNN(64, activation='relu', return_sequences=True)(x)
+        x = layers.SimpleRNN(128, activation='relu', return_sequences=True)(x)
+        x = layers.SimpleRNN(256, activation='relu', return_sequences=False)(x)
     x = layers.Flatten()(x)
     return x
 
