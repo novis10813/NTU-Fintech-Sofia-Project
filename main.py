@@ -1,11 +1,20 @@
 import numpy as np
 import pandas as pd
+import logging
+
 from agents.Baseline import LogisticPolicy,LP_train
 from agents.DQN import DQN, DuelDQN, DoubleDQN, CERDQN
 from data.data_bitmex import get_all_bitmex
 from Env import CustomEnv
 from parameters import DQNparams
 from preprocessing import preprocessing
+
+formatter = logging.Formatter(r'"%(asctime)s",%(message)s')
+logger = logging.getLogger("dino-rl")
+logger.setLevel(logging.INFO)
+fh = logging.FileHandler("./logs/test.csv")
+fh.setFormatter(formatter)
+logger.addHandler(fh)
 
 param=DQNparams()
 
