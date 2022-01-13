@@ -113,7 +113,7 @@ class CustomEnv:
         #Write_to_file(Date, self.orders_history[-1])
 
         # Calculate reward
-        reward = self.net_worth - self.prev_net_worth
+        reward = np.log(self.net_worth/self.prev_net_worth)
 
         if self.net_worth <= self.initial_balance/2:
             done = True
