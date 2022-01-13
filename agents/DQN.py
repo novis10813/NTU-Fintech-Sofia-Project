@@ -44,7 +44,7 @@ class DQN(DQNparams):
     def _choose_action(self, state):
         if random.random() < self.epsilon.anneal():
             return np.argmax(self.policy_model.predict(np.expand_dims(state, axis=0)))
-        return random.randint(0, self.n_action)
+        return random.randint(0, self.n_action-1)
     
     def _optimize(self):
         if len(self.replay_memory) < self.BATCH_SIZE * 3:
@@ -65,12 +65,14 @@ class DQN(DQNparams):
         Qs_next_max = tf.reduce_max(Qs_next, axis=1, keepdims=True).numpy()
         Qs_target = np.copy(Qs)
         
+        #print(actions[:10])
+
         for i in range(self.BATCH_SIZE):
             if not dones[i]:
+                #print("actions[i]",actions[i])
                 Qs_target[i, actions[i]] = rewards[i] + self.GAMMA * Qs_next_max[i]
             else:
                 Qs_target[i, actions[i]] = rewards[i]
-            
         self.policy_model.train_on_batch(states, Qs_target)
     
     def _save(self, path):
@@ -93,7 +95,7 @@ class DQN(DQNparams):
             state = self.env.reset()
             done = False
             total_reward = 0
-            for t in itertools():
+            for t in itertools.count():
                 action = self._choose_action(state)
                 next_state, reward, done = self.env.step(action)
                 self._update_memory((state, action, next_state, reward, done))

@@ -25,13 +25,13 @@ df.columns=['Date', 'symbol', 'Open', 'High', 'Low', 'Close', 'Trades',
 
 train_df,valid_df=preprocessing(df,1)
 print("preprocessing is done")
-print(train_df,valid_df)
 
 window_list={50,100,500,1000}
 for window_size in window_list:
 	train_env = CustomEnv(train_df,1000,window_size,100)
 	valid_env = CustomEnv(valid_df,1000,window_size,100)
 
+	np.random.seed(window_size)
 	episode_rewards, policy = LP_train(θ=np.random.rand(window_size*10),
 												α=0.1,
 												γ=0.99,
@@ -39,27 +39,30 @@ for window_size in window_list:
 												Policy=LogisticPolicy,
 												learn_env=train_env,
 												valid_env=valid_env,
-												MAX_EPISODES=30,
+												MAX_EPISODES=1,
 												evaluate=False)
 	print("window_size:",window_size,"episode_rewards:",episode_rewards)
 
 	### DQN Agent ###
 	agent = DQN(train_env)
-	agent.train()
-	print(agent.log)
+	agent.train(logger)
+	print("DQN:\n","window_size:",window_size,"logger:",logger)
 	#################
 
 	### Duel DQN ###
-	# agent = DuelDQN(env)
-	# agent.train()
+	agent = DuelDQN(train_env)
+	agent.train()
+	print("DuelDQN:\n","window_size:",window_size,"logger:",logger)
 	################
 
 	### Double DQN ###
-	# agent = DoubleDQN(env)
-	# agent.train()
+	agent = DoubleDQN(train_env)
+	agent.train()
+	print("DoubleDQN:\n","window_size:",window_size,"logger:",logger)
 	################
 
 	### CER DQN ###
-	# agent = CERDQN(env)
-	# agent.train()
+	agent = CERDQN(train_env)
+	agent.train()
+	print("CERDQN:\n","window_size:",window_size,"logger:",logger)
 	################

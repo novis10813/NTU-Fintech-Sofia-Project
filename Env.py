@@ -27,7 +27,8 @@ class CustomEnv:
         self.market_history = deque(maxlen=self.window_size)
 
         # State size contains Market+Orders history for the last lookback_window_size steps
-        self.state_size = (self.window_size, len(self.df.columns))
+        self.state_size = (self.window_size, 10)
+        #self.state_size = (self.window_size, len(self.df.columns))
 
     # Reset the state of the environment to an initial state
     def reset(self, env_steps_size = 0):

@@ -60,7 +60,8 @@ def Net(state_shape, n_action, lr, type='RNN', layer_norm=False):
     x = layers.Dense(512, activation='relu')(x)
     output = layers.Dense(n_action, activation='linear')(x)
     model = Model(input, output)
-    model.compile(optimizer=RMSprop(learning_rate=lr), loss=Huber)
+    model.compile(optimizer=RMSprop(learning_rate=lr), loss=Huber(delta=1.5))
+    #Huber should be initiate, so i add (delta=1.5)
     return model
 
 def DuelNet(state_shape, n_action, lr, type='RNN', layer_norm=False):
