@@ -8,11 +8,11 @@ class DQNparams:
     MODEL_UPDATE : Update target model every n epoch/iteration
     GAMMA : Discount rate for future Q
     '''
-    LR = 0.00025
+    LR = 0.0001
     EPSILON = 0.1
     MIN_EPSILON = 0.0001
-    MEMORY_SIZE = 60000
+    MEMORY_SIZE = 5000
     EPISODES = 20000
-    BATCH_SIZE = 256
-    MODEL_UPDATE = 5
-    GAMMA = 0.95
+    BATCH_SIZE = 64
+    MODEL_UPDATE = 1000
+    GAMMA = 0.3

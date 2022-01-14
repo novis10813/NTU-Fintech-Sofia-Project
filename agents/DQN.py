@@ -28,7 +28,7 @@ class DQN(DQNparams):
         self.epsilon = LinearAnneal(self.EPSILON, self.MIN_EPSILON, self.EPISODES)
         
         # initialize logging
-        # self.log = self._logging()
+        self._init_log()
     
     def _init_model(self):
         self.policy_model = Net(self.state_shape, self.n_action, self.LR, self.type, self.layer_norm)
@@ -79,16 +79,15 @@ class DQN(DQNparams):
     def _save(self, path):
         self.policy_model.save(path)
     
-    # def _logging(self):
-    #     formatter = logging.Formatter(r'"%(asctime)s",%(message)s')
-    #     logger = logging.getLogger('Trade-Agents')
-    #     logger.setLevel(logging.INFO)
-    #     fh = logging.FileHandler(f'./logs/{self.name}_{self.type}.csv')
-    #     fh.setFormatter(formatter)
-    #     logger.addHandler(fh)
-    #     return logger
+    def _init_log(self):
+        formatter = logging.Formatter(r'"%(asctime)s",%(message)s')
+        self.logger = logging.getLogger('Trade-Agents')
+        self.logger.setLevel(logging.INFO)
+        fh = logging.FileHandler(f'./logs/{self.name}_{self.type}.csv')
+        fh.setFormatter(formatter)
+        self.logger.addHandler(fh)
     
-    def train(self, logger):
+    def train(self):
         reward_list = []
         optm_cnt = 0
         for episode in range(1, self.EPISODES+1):
@@ -97,6 +96,7 @@ class DQN(DQNparams):
             done = False
             total_reward = 0
             for t in itertools.count():
+                self.env.render(True)
                 action = self._choose_action(state)
                 next_state, reward, done = self.env.step(action)
                 self._update_memory((state, action, next_state, reward, done))
@@ -117,10 +117,10 @@ class DQN(DQNparams):
                 self._save(path=f'./models/{self.name}_{self.type}')
             
             # Update model every n episode
-            if episode % self.MODEL_UPDATE == 0:
-                self._update_model()
+            # if episode % self.MODEL_UPDATE == 0:
+            #     self._update_model()
             
-            logger.info(f'{episode},{optm_cnt},{total_reward},{self.epsilon.p:.6f}')
+            self.logger.info(f'{episode},{optm_cnt},{total_reward},{self.epsilon.p:.6f}')
             
 class DuelDQN(DQN):
     def __init__(self, env, type='RNN', layer_norm=False, name='DuelDQN'):
