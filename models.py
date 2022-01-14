@@ -6,46 +6,48 @@ from tensorflow.python.keras.optimizer_v2.rmsprop import RMSProp
 
 def RNN_Block(x, layer_norm=False):
     if layer_norm:
-        x = layers.SimpleRNN(64, activation='relu', return_sequences=True)(x)
+        x = layers.SimpleRNN(64, return_sequences=True)(x)
+        x = layers.LeakyReLU()
         x = layers.LayerNormalization()(x)
-        x = layers.SimpleRNN(128, activation='relu', return_sequences=True)(x)
-        x = layers.LayerNormalization()(x)
-        x = layers.SimpleRNN(256, activation='relu', return_sequences=False)(x)
+        x = layers.SimpleRNN(32, return_sequences=True)(x)
+        x = layers.LeakyReLU()
         x = layers.LayerNormalization()(x)
     else:
-        x = layers.SimpleRNN(64, activation='relu', return_sequences=True)(x)
-        x = layers.SimpleRNN(128, activation='relu', return_sequences=True)(x)
-        x = layers.SimpleRNN(256, activation='relu', return_sequences=False)(x)
+        x = layers.SimpleRNN(64, return_sequences=True)(x)
+        x = layers.LeakyReLU()
+        x = layers.SimpleRNN(32, return_sequences=True)(x)
+        x = layers.LeakyReLU()
     x = layers.Flatten()(x)
     return x
 
 def LSTM_Block(x, layer_norm=False):
     if layer_norm:
         x = layers.LSTM(64, return_sequences=True)(x)
+        x = layers.LeakyReLU()
         x = layers.LayerNormalization()(x)
-        x = layers.LSTM(128, return_sequences=True)(x)
-        x = layers.LayerNormalization()(x)
-        x = layers.LSTM(256, return_sequences=False)(x)    
+        x = layers.LSTM(32, return_sequences=True)(x)
         x = layers.LayerNormalization()(x)
     else:
         x = layers.LSTM(64, return_sequences=True)(x)
-        x = layers.LSTM(128, return_sequences=True)(x)
-        x = layers.LSTM(256, return_sequences=False)(x)
+        x = layers.LeakyReLU()
+        x = layers.LSTM(32, return_sequences=True)(x)
+        x = layers.LeakyReLU()
     x = layers.Flatten()(x)
     return x
 
 def GRU_Block(x, layer_norm=False):
     if layer_norm:
         x = layers.GRU(64, return_sequences=True)(x)
+        x = layers.LeakyReLU()
         x = layers.LayerNormalization()(x)
-        x = layers.GRU(128, return_sequences=True)(x)
-        x = layers.LayerNormalization()(x)
-        x = layers.GRU(256, return_sequences=False)(x)
+        x = layers.GRU(32, return_sequences=True)(x)
+        x = layers.LeakyReLU()
         x = layers.LayerNormalization()(x)
     else:
         x = layers.GRU(64, return_sequences=True)(x)
-        x = layers.GRU(128, return_sequences=True)(x)
-        x = layers.GRU(256, return_sequences=False)(x)
+        x = layers.LeakyReLU()
+        x = layers.GRU(32, return_sequences=True)(x)
+        x = layers.LeakyReLU()
     x = layers.Flatten()(x)
     return x
 
