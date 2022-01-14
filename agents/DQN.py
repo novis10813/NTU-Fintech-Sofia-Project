@@ -44,7 +44,8 @@ class DQN(DQNparams):
     def _choose_action(self, state):
         if random.random() < self.epsilon.anneal():
             return np.argmax(self.policy_model.predict(np.expand_dims(state, axis=0)))
-        return random.randint(0, self.n_action-1)
+        else:
+            return np.random.randint(0, self.n_action-1)
     
     def _optimize(self):
         if len(self.replay_memory) < self.BATCH_SIZE * 3:

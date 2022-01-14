@@ -46,23 +46,19 @@ for window_size in window_list:
 	### DQN Agent ###
 	agent = DQN(train_env)
 	agent.train(logger)
-	print("DQN:\n","window_size:",window_size,"logger:",logger)
 	#################
 
 	### Duel DQN ###
-	agent = DuelDQN(train_env)
-	agent.train()
-	print("DuelDQN:\n","window_size:",window_size,"logger:",logger)
+	# agent = DuelDQN(train_env)
+	# agent.train(logger)
 	################
 
 	### Double DQN ###
-	agent = DoubleDQN(train_env)
-	agent.train()
-	print("DoubleDQN:\n","window_size:",window_size,"logger:",logger)
+	# agent = DoubleDQN(train_env)
+	# agent.train(logger)
 	################
 
 	### CER DQN ###
-	agent = CERDQN(train_env)
-	agent.train()
-	print("CERDQN:\n","window_size:",window_size,"logger:",logger)
+	# agent = CERDQN(train_env)
+	# agent.train(logger)
 	################
